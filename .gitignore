@@ -1,0 +1,30 @@
+# IDEs and Editors
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Dependencies
+**/node_modules/
+
+# Environments
+.env
+.env.*
+
+# Build outputs
+**/dist/
+/dist
+/build
+tsconfig.tsbuildinfo
+
+# Framework caches
+**/.angular/
+**/.nestjs/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
