@@ -3,12 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UsersModule } from './modules/users/users.module';
-import { CategoriesModule } from './modules/categories/categories.module';
-import { ProductsModule } from './modules/products/products.module';
-import { CouponsModule } from './modules/coupons/coupons.module';
-import { OrdersModule } from './modules/orders/orders.module';
-import { PaymentsModule } from './modules/payments/payments.module';
+import { UsersModule } from './modules/user/user.module';
+import { CategoriesModule } from './modules/category/category.module';
+import { ProductsModule } from './modules/product/product.module';
+import { CouponsModule } from './modules/coupon/coupon.module';
+import { OrdersModule } from './modules/order/order.module';
+import { PaymentsModule } from './modules/payment/payment.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
