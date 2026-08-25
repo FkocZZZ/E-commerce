@@ -3,12 +3,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UsersModule } from './users/users.module';
-import { CategoriesModule } from './categories/categories.module';
-import { ProductsModule } from './products/products.module';
-import { CouponsModule } from './coupons/coupons.module';
-import { OrdersModule } from './orders/orders.module';
-import { PaymentsModule } from './payments/payments.module';
+import { UsersModule } from './modules/users/users.module';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { ProductsModule } from './modules/products/products.module';
+import { CouponsModule } from './modules/coupons/coupons.module';
+import { OrdersModule } from './modules/orders/orders.module';
+import { PaymentsModule } from './modules/payments/payments.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { PaymentsModule } from './payments/payments.module';
     ProductsModule,
     CouponsModule,
     OrdersModule,
-    PaymentsModule
+    PaymentsModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
