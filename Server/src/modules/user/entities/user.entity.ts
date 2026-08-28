@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { randomBytes } from "crypto";
 import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
 import { v7 as uuidv7 } from 'uuid';
@@ -15,7 +16,8 @@ export class User {
   @Column({ length: 100, unique: true })
   email!: string;
 
-  @Column()
+  @Column({select: false})
+  @Exclude()
   password!: string;
 
   @Column({ length: 100 })

@@ -1,26 +1,50 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/modules/user/entities/user.entity';
+import { Repository } from 'typeorm';
+import { LoginDto } from './dto/login.dto';
+import * as bcrypt from 'bcrypt'
+import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>
+  ) {}
+
+  async register(registerDto: RegisterDto): Promise<User> {
+    const { email, password} = registerDto;
+    const existingUser = await this.userRepository.findOneBy({ email: email });
+
+    if(existingUser) {
+      throw new ConflictException('Email already existed!');
+    }
+    
+    const saltRound = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRound);
+
+    const newUser = this.userRepository.create({ ...registerDto, password: hashedPassword });
+
+    return await this.userRepository.save(newUser);
   }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+  async login(loginDto: LoginDto): Promise<{ message: string }> {
+    const { email, password } = loginDto;
+    const user = await this.userRepository.findOne({
+      where: { email: email },
+      select: { password: true }
+    })
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+    if (!user) {
+      throw new NotFoundException('Email not found');
+    }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    if (!isPasswordMatch) {
+      throw new UnauthorizedException('Wrong password');
+    }
+    return { message: 'Login Successful!'}
   }
 }
