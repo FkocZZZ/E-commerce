@@ -13,7 +13,7 @@ export class CategoriesService {
     private readonly categoryRepository: Repository<Category>,
   ){}
 
-  //POST Category
+  // Create a new category with unique slug
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     const { name } = createCategoryDto;
 
@@ -30,7 +30,7 @@ export class CategoriesService {
     return await this.categoryRepository.save(newCategory);
   }
 
-  //GET Category
+  // Find a specific category by ID, throw 404 if not found
   async getAll() {
     return await this.categoryRepository.find();
   }
@@ -45,7 +45,7 @@ export class CategoriesService {
     return category;
   }
 
-  //PATCH Category
+  // Update category information and recalculate slug if name changes
   async update(id: number, updateCategoryDto: UpdateCategoryDto): Promise<Category> {
     const category = await this.getById(id);
     const { name } = updateCategoryDto;
@@ -59,15 +59,15 @@ export class CategoriesService {
         throw new ConflictException(`Category name "${name}" already exsit`)
       }
 
-      (updateCategoryDto as any).slug = newSlug;
+      category.slug = newSlug;
     }
 
-    const updatedCategory = Object.assign(category, updateCategoryDto);
+    const updatedCategory = this.categoryRepository.merge(category, updateCategoryDto)
 
     return await this.categoryRepository.save(updatedCategory);
   }
 
-  //DELETE Category
+  // Delete a category by ID
   async remove(id: number): Promise<{ message: string }> {
     const category = await this.getById(id);
     

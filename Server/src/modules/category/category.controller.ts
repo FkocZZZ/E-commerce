@@ -4,35 +4,35 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 
-@Controller('categories')
+@Controller('category')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
-  //api/v1/categories
+  // POST api/v1/category - Create a new category
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto): Promise<Category> {
     return await this.categoriesService.create(createCategoryDto);
   }
 
-  //api/v1/categories
+  // GET /api/v1/category - Get all categories
   @Get()
   async getAll(): Promise<Category[]> {
     return await this.categoriesService.getAll();
   }
 
-  //api/v1/categories/:id
+  // GET /api/v1/category/:id - Get a specific category by ID
   @Get(':id')
   async getById(@Param('id', ParseIntPipe) id: number): Promise<Category> {
     return await this.categoriesService.getById(id);
   }
 
-  //api/v1/categories/:id
+  // PATCH /api/v1/category/:id - Update category information by ID
   @Patch(':id')
   async update(@Param('id', ParseIntPipe) id: number, @Body() updateCategoryDto: UpdateCategoryDto) {
     return await this.categoriesService.update(id, updateCategoryDto);
   }
 
-  //api/v1/categories/:id
+  // DELETE /api/v1/category/:id - Delete a category by ID
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
     return await this.categoriesService.remove(id);

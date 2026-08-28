@@ -8,13 +8,13 @@ import { RegisterDto } from './dto/register.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  //api/v1/auth/registerr - Register a new user account
+  //POST api/v1/auth/registerr - Register a new user account
   @Post('register')
   async register(@Body() registerDto: RegisterDto): Promise<User> {
     return await this.authService.register(registerDto);
   }
 
-  //api/v1/auth/login - Authenticate user credentials and log in
+  //POST api/v1/auth/login - Authenticate user credentials and log in
   @Post('login')
   async login(@Body() loginDto: LoginDto): Promise<{ message: string }> {
     return await this.authService.login(loginDto);
