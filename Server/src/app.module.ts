@@ -10,6 +10,7 @@ import { CouponsModule } from './modules/coupon/coupon.module';
 import { OrdersModule } from './modules/order/order.module';
 import { PaymentsModule } from './modules/payment/payment.module';
 import { AuthModule } from './auth/auth.module';
+import { ReviewModule } from './modules/review/review.module';
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { AuthModule } from './auth/auth.module';
     CouponsModule,
     OrdersModule,
     PaymentsModule,
-    AuthModule
+    AuthModule,
+    ReviewModule
   ],
   controllers: [AppController],
   providers: [AppService],

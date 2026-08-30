@@ -1,5 +1,5 @@
-import Helper from "src/ultils/helpers";
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Product } from "src/modules/product/entities/product.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('category')
 export class Category {
@@ -21,9 +21,13 @@ export class Category {
   @Column({ default: true })
   isActive!: boolean;
 
+  @OneToMany(() => Product, (product) => product.category)
+  products!: Product[];
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;
   
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date;
+
 }
