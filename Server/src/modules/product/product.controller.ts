@@ -3,6 +3,9 @@ import { ProductsService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
+import { Public } from 'src/common/decorators/public.decorator';
+import { Roles } from 'src/common/decorators/role.decorator';
+import { UserRole } from '../user/entities/user.entity';
 
 @Controller('product')
 export class ProductsController {
@@ -10,24 +13,28 @@ export class ProductsController {
 
   // POST api/v1/product - Create a new product with optional image album
   @Post()
+  @Roles(UserRole.ADMIN)
   async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
     return await this.productsService.create(createProductDto);
   }
 
   // GET api/v1/product - Get a list of all products
   @Get()
+  @Public()
   async getAll(): Promise<Product[]> {
     return await this.productsService.getAll();
   }
 
   // GET api/v1/product/:id - Get a specific product detail by ID
   @Get(':id')
+  @Public()
   async getById(@Param('id', ParseIntPipe) id: number): Promise<Product> {
     return await this.productsService.getById(id);
   }
 
   // PATCH api/v1/product/:id - Update product properties by ID
   @Patch(':id')
+  @Roles(UserRole.ADMIN)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateProductDto: UpdateProductDto
@@ -37,6 +44,7 @@ export class ProductsController {
 
   // DELETE api/v1/product/:id - Delete a product by ID
   @Delete(':id')
+  @Roles(UserRole.ADMIN)
   async remove(@Param('id', ParseIntPipe) id: number): Promise<{ message: string}> {
     return await this.productsService.remove(id);
   }

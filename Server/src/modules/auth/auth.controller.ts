@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { User } from 'src/modules/user/entities/user.entity';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { LoginResponse } from './interfaces/login-responce.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -16,7 +17,8 @@ export class AuthController {
 
   //POST api/v1/auth/login - Authenticate user credentials and log in
   @Post('login')
-  async login(@Body() loginDto: LoginDto): Promise<{ message: string }> {
+  @HttpCode(HttpStatus.OK)
+  async login(@Body() loginDto: LoginDto): Promise<LoginResponse> {
     return await this.authService.login(loginDto);
   }
 }

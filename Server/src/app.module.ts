@@ -9,8 +9,11 @@ import { ProductsModule } from './modules/product/product.module';
 import { CouponsModule } from './modules/coupon/coupon.module';
 import { OrdersModule } from './modules/order/order.module';
 import { PaymentsModule } from './modules/payment/payment.module';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { ReviewModule } from './modules/review/review.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtGuard } from './common/guards/jwt.guard';
+import { RolesGuard } from './common/guards/roles.guard';
 
 @Module({
   imports: [
@@ -43,6 +46,16 @@ import { ReviewModule } from './modules/review/review.module';
     ReviewModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard
+    },
+    AppService
+  ],
 })
 export class AppModule {}

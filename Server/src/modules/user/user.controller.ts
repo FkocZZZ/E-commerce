@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UsersService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Roles } from 'src/common/decorators/role.decorator';
+import { UserRole } from './entities/user.entity';
 
 @Controller('user')
 export class UsersController {
@@ -21,12 +22,14 @@ export class UsersController {
 
   //PATCH api/v1/user/:id - Update user information by ID
   @Patch(':id')
+  @Roles(UserRole.ADMIN)
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return await this.usersService.update(id, updateUserDto);
   }
 
   //DELETE api/v1/user/:id - Delete a user by ID
   @Delete(':id')
+  @Roles(UserRole.ADMIN)
   async remove(@Param('id') id: string) {
     return await this.usersService.remove(id);
   }

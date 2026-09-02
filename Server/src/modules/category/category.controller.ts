@@ -1,8 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { CategoriesService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
+import { Public } from 'src/common/decorators/public.decorator';
+import { Roles } from 'src/common/decorators/role.decorator';
+import { UserRole } from '../user/entities/user.entity';
 
 @Controller('category')
 export class CategoriesController {
@@ -10,12 +13,14 @@ export class CategoriesController {
 
   // POST api/v1/category - Create a new category
   @Post()
+  @Roles(UserRole.ADMIN)
   async create(@Body() createCategoryDto: CreateCategoryDto): Promise<Category> {
     return await this.categoriesService.create(createCategoryDto);
   }
 
   // GET /api/v1/category - Get all categories
   @Get()
+  @Public()
   async getAll(): Promise<Category[]> {
     return await this.categoriesService.getAll();
   }
@@ -28,12 +33,14 @@ export class CategoriesController {
 
   // PATCH /api/v1/category/:id - Update category information by ID
   @Patch(':id')
+  @Roles(UserRole.ADMIN)
   async update(@Param('id', ParseIntPipe) id: number, @Body() updateCategoryDto: UpdateCategoryDto) {
     return await this.categoriesService.update(id, updateCategoryDto);
   }
 
   // DELETE /api/v1/category/:id - Delete a category by ID
   @Delete(':id')
+  @Roles(UserRole.ADMIN)
   async remove(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
     return await this.categoriesService.remove(id);
   }
